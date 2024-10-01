@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 
@@ -44,7 +44,7 @@ export const login= async (req,res)=>
                 success: false,
             });
         }
-        const user= await User.findOne({email});
+        let user= await User.findOne({email});
         if(!user)
         {
             return res.status(400).json({message: "Incorrect email or password",
