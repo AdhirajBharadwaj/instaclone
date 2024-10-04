@@ -53,6 +53,26 @@ export const sendMessage = async (req, res) => {
 
 export const getMessages = async (req, res) => {
     try {
+        const senderId = req.id;
+        const receiverId = req.params.id;
+
+        const conversation = await Conversation.find({
+            participants: { $all: [senderId, receiverId] } 
+        });
+
+        if(!conversation)
+        {
+            return res.status(404).json({
+                message: "Conversation not found",
+                success: false,
+            });
+        }
+
+       return res.status(200).json({
+        messages: conversation?.messages,
+        success: true,
+       });
+        
         
     }
     catch (error) {
